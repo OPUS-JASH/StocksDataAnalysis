@@ -1,0 +1,54 @@
+.main_container{
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    width: 100%;
+    padding-inline: 2em;
+}
+
+.btn-container{
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    font-size: 1.2em;
+}
+
+.filter-container{
+    margin-bottom: 1em;
+    width: 100%;
+    padding-inline: 2em;
+    display: flex;
+    justify-content: space-between;
+}
+.searchContainer{
+    display: flex;
+    gap: 1em;
+}
+
+td[type="LONGBUILDUP"]{
+    background-color: rgb(162, 204, 162);
+}
+
+td[type="SHORTBUILDUP"]{
+    background-color: rgb(255, 159, 159);
+}
+
+td[type="LONGUNWINDING"]{
+    background-color: rgb(183, 255, 255);
+}
+
+td[type="SHORTCOVERING"]{
+    background-color: rgb(239, 255, 168);
+}
+
+td[col="status"]{
+    text-align: center;
+}
+
+th div{
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
