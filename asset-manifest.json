@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/StocksDataAnalysis/static/css/main.2a1faa79.css",
+    "main.js": "/StocksDataAnalysis/static/js/main.4cd921e0.js",
+    "index.html": "/StocksDataAnalysis/index.html",
+    "main.2a1faa79.css.map": "/StocksDataAnalysis/static/css/main.2a1faa79.css.map",
+    "main.4cd921e0.js.map": "/StocksDataAnalysis/static/js/main.4cd921e0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2a1faa79.css",
+    "static/js/main.4cd921e0.js"
+  ]
+}
