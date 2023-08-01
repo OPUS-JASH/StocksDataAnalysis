@@ -11,7 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import { formatDate } from '../../Utils/formatDate';
 
 function Table({openToast}) {
-
+    const [isLoading,setIsLoading] = useState(false);
     const [data,setData] = useState([]);
     const [tempDate,setTempDate] = useState({
         date1 : "",
@@ -67,14 +67,19 @@ function Table({openToast}) {
                             date2 : res.data.dates.date2
                         })
                     })
+                    .finally(() => {
+                        setIsLoading(false);
+                    })
             
     }
 
     useEffect(() => {
+            setIsLoading(true);
             fetchData();
     },[page,params,filter])
 
     useEffect(() => {
+        setIsLoading(true);
         const delayDebounceFn = setTimeout(() => {
             fetchData();
           }, 500)
@@ -100,6 +105,7 @@ function Table({openToast}) {
     };
 
     function validateDates(){
+        setIsLoading(true);
         axios.post("https://stockapi-zp65.onrender.com/api/validateDates",dates)
             .then((res) => {
                 console.log(res.data.status);
@@ -117,6 +123,9 @@ function Table({openToast}) {
                     }
                     setParams({date1,date2});
                 }
+            })
+            .finally(() => {
+                setIsLoading(false);
             })
     }
 
@@ -152,16 +161,19 @@ function Table({openToast}) {
     <>
     <div className='filter-container'>
         <div className='searchContainer'>
-            <input type="text" className="form-control" id="searchTerm" placeholder="What are you looking for ?" style={{width: '25em'}} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+            <input type="text" className="form-control" id="searchTerm" placeholder="What are you looking for ?" style={{width: '25em'}} value={searchTerm} onChange={(e) => {
+                    setSearchTerm(e.target.value)
+                    setPage(1);
+                }}/>
             {/* <button className='btn btn-success'>
                 <SearchOutlinedIcon/>
             </button> */}
         </div>
         <div className='searchContainer'>
             <div>
-                <input type='date' style={{padding: '.3em 1em' }} value={parseDate(tempDate.date1)} onChange={(e) => setDates({...dates,date1 : formatDate(e.target.value)})}/>
+                <input type='date' style={{padding: '.3em 1em' }} value={parseDate(dates.date1 === "" ? tempDate.date1 : dates.date1)} onChange={(e) => setDates({...dates,date1 : formatDate(e.target.value)})}/>
             </div>
-            <input type='date' style={{padding: '.3em 1em' }} value={parseDate(tempDate.date2)} onChange={(e) => setDates({...dates,date2 : formatDate(e.target.value)})}/>
+            <input type='date' style={{padding: '.3em 1em' }} value={parseDate(dates.date2 === "" ? tempDate.date2 : dates.date2)} onChange={(e) => setDates({...dates,date2 : formatDate(e.target.value)})}/>
             <button className='btn btn-outline-success' onClick={validateDates}>
                 <FilterAltOutlinedIcon/>
             </button>
@@ -210,7 +222,12 @@ function Table({openToast}) {
                 </tr>
             </thead>
             <tbody>
-                {data.map((item) => {
+            {isLoading ? 
+                <tr>
+                    <td style={{backgroundColor:'white',textAlign:'center',fontSize:'1.9em',color:'gray'}} colSpan="9">Loading....</td>
+                </tr>
+            :
+                data.map((item) => {
                     const {_id,symbol,price,contract,OIChange,status,priceChange} = item;
                     const close1 = price[0].close;
                     const close2 = price[1].close;
@@ -238,16 +255,16 @@ function Table({openToast}) {
                         </tr>
                     )
                 })
-                }
+            }
             </tbody>
         </table>
     </div>
         <div className='btn-container'>
-            <button className='btn btn-success' onClick={decrementPage} disabled={page===1}>
+            <button className='btn btn-success'  onClick={decrementPage} disabled={page===1 || isLoading}>
                 <KeyboardArrowLeftOutlinedIcon/>
             </button>
                 {page}
-            <button className='btn btn-success' onClick={IncrementPage} disabled={data.length<15}>
+            <button className='btn btn-success' onClick={IncrementPage} disabled={data.length<15 || isLoading}>
                 <KeyboardArrowRightOutlinedIcon/>
             </button>
         </div>
