@@ -52,7 +52,8 @@ function Table({openToast}) {
 
     // console.log(params);
     function fetchData(){
-                axios.post("http://localhost:3000/api/fetch",{
+                axios.post("https://stockapi-zp65.onrender.com/api/fetch",{
+                // axios.post("http://localhost:3000/api/fetch",{
                     dates:params,
                     noOfRows : 15,
                     page,
@@ -99,7 +100,7 @@ function Table({openToast}) {
     };
 
     function validateDates(){
-        axios.post("http://localhost:3000/api/validateDates",dates)
+        axios.post("https://stockapi-zp65.onrender.com/api/validateDates",dates)
             .then((res) => {
                 console.log(res.data.status);
                 if(dates.date1=== "" || dates.date2 === ""){
